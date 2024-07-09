@@ -1,9 +1,8 @@
 {
 	"info": {
 		"_postman_id": "98fa32ec-79a2-4c86-b066-cbd2b1bedfff",
-		"name": "Forum Alura API",
-		"description": "Uma API Rest feita em resposta ao 4º Challenge da turma 6 do programa One \"Forum Alura\".\n\nContact Support:\n Name: Jeferson Labout\n Email: jefson1989@gmail.com",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"name": " Fórum Hub API",
+		"description": "Uma API Rest feita em resposta ao  Challenge do programa One \"Fórum Hub  Alura\".\n\nContact Support:\n Name: Jeferson Labout\n Email: jefson1989@gmail.com","schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "14177651",
 		"_collection_link": "https://speeding-rocket-777187.postman.co/workspace/c0856acf-15df-4f01-8a74-4fc595e10712/collection/14177651-98fa32ec-79a2-4c86-b066-cbd2b1bedfff?action=share&source=collection_link&creator=14177651"
 	},
