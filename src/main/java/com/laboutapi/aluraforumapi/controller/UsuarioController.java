@@ -1,5 +1,6 @@
 package com.laboutapi.aluraforumapi.controller;
 
+import com.laboutapi.aluraforumapi.domain.enums.Perfil;
 import com.laboutapi.aluraforumapi.domain.user.*;
 import com.laboutapi.aluraforumapi.domain.user.DTO.DadosCadastroUsuario;
 import com.laboutapi.aluraforumapi.domain.user.DTO.DadosUsuarioAtualizar;
@@ -54,13 +55,19 @@ public class UsuarioController {
         String senhaCriptografada = passwordEncoder.encode(dadosUsuario.senha());
         var novosDados = new DadosCadastroUsuario(dadosUsuario, senhaCriptografada);
 
-        var usuario = usuarioRepository.save(new Usuario(novosDados));
+        var usuario = new Usuario(novosDados);
+
+        // Verificar se nenhum perfil foi passado e adicionar o perfil padrão USUARIO
+        if (usuario.getPerfis().isEmpty()) {
+            usuario.addPerfil(Perfil.USUARIO);
+        }
+
+        usuario = usuarioRepository.save(usuario);
 
         var uri = uriBuilder.path("/usuario/{id}").buildAndExpand(usuario.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosUsuarioCompleto(usuario));
     }
-
     @GetMapping("{id}")
     @Operation(summary = "Buscar usuário", description = "Procura um usuário com o ID informado no banco de dados.",
             security = @SecurityRequirement(name = "TokenJWT"))

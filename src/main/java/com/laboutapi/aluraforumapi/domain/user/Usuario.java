@@ -1,5 +1,6 @@
 package com.laboutapi.aluraforumapi.domain.user;
 
+import com.laboutapi.aluraforumapi.domain.enums.Perfil;
 import com.laboutapi.aluraforumapi.domain.user.DTO.DadosCadastroUsuario;
 import com.laboutapi.aluraforumapi.domain.user.DTO.DadosUsuarioAtualizar;
 import jakarta.persistence.*;
@@ -9,7 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Table(name = "usuarios")
 @Entity(name = "usuario")
@@ -19,7 +22,12 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -32,10 +40,16 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfis", joinColumns = @JoinColumn(name = "usuario_id"))
+    @Column(name = "perfil")
+    private Set<Integer> perfis = new HashSet<>();
+
     public Usuario(DadosCadastroUsuario dadosUsuario) {
         this.nome = dadosUsuario.nome();
         this.email = dadosUsuario.email();
         this.senha = dadosUsuario.senha();
+        addPerfil(Perfil.USUARIO); // Adiciona perfil padrão
     }
 
     public void atualizar(DadosUsuarioAtualizar dadosUsuario) {
@@ -49,7 +63,9 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return getPerfis().stream()
+                .map(perfil -> new SimpleGrantedAuthority(perfil.getDescricao()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -80,5 +96,15 @@ public class Usuario implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis.stream()
+                .map(Perfil::toEnum)
+                .collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil) {
+        this.perfis.add(perfil.getCodigo());
     }
 }

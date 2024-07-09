@@ -1,8 +1,11 @@
 package com.laboutapi.aluraforumapi.domain.user.DTO;
 
+import com.laboutapi.aluraforumapi.domain.enums.Perfil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 public record DadosCadastroUsuario(
         @NotBlank(message = "{nome.obrigatorio}")
@@ -12,13 +15,15 @@ public record DadosCadastroUsuario(
         String email,
         @NotBlank(message = "{senha.obrigatoria}")
         @Size(min = 4, message = "{senha.invalida}")
-        String senha) {
+        String senha,
+        Set<Perfil> perfis) {
 
-    public DadosCadastroUsuario(DadosCadastroUsuario usuario, String senhaCriptografada){
+    public DadosCadastroUsuario(DadosCadastroUsuario usuario, String senhaCriptografada) {
         this(
                 usuario.nome,
                 usuario.email,
-                senhaCriptografada
+                senhaCriptografada,
+                usuario.perfis
         );
     }
 }
