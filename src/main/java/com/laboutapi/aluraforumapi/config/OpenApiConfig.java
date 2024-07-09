@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(info = @Info(
         title = "Forum Alura API",
-        description = "Uma API Rest feita em resposta ao 4º Challenge da turma 6 do programa One \"Forum Alura\".",
+        description = "Uma API Rest desafio do \"Fórum Hub  Alura\".",
         version = "2.0",
         contact = @Contact(name = "Jeferson Labout", email = "jefson1989@gmail.com", url = "https://github.com/jeferson-labout"))
 )
